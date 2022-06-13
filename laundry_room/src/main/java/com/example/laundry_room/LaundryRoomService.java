@@ -44,8 +44,7 @@ public class LaundryRoomService {
     }
 
     public Building createBuilding(Building building) {
-        Building b = buildingRepository.save(building);
-        return b;
+        return buildingRepository.save(building);
     }
 
     public Boolean creatHouseholds(Long id, List<Household> households) throws ServiceException {
@@ -82,8 +81,8 @@ public class LaundryRoomService {
 
     }
 
-    public BookingSlot createBookSlot(Long id, Long householdId, BookingSlot bookingSlot) throws ServiceException {
-        LaundryRoom laundryRoom = laundryRoomRepository.findById(id).orElse(null);
+    public BookingSlot createBookSlot(Long roomId, Long householdId, BookingSlot bookingSlot) throws ServiceException {
+        LaundryRoom laundryRoom = laundryRoomRepository.findById(roomId).orElse(null);
         if (laundryRoom == null)
             throw new ServiceException("Laundry room doesn't exist.", HttpStatus.BAD_REQUEST.value());
 
@@ -93,17 +92,16 @@ public class LaundryRoomService {
 
         bookingSlot.setLaundryRoom(laundryRoom);
         bookingSlot.setHousehold(household);
-        List<BookingSlot> bookingSlotsForDay = bookingSlotRepository.findByLaundryRoomIdAndDate(id, bookingSlot.getDate());
+        List<BookingSlot> bookingSlotsForDay = bookingSlotRepository.findByLaundryRoomIdAndDate(roomId, bookingSlot.getDate());
+        List<BookingSlot> bookingSlotsByHousehold = bookingSlotRepository.findByHouseholdIdAndDateAfter(bookingSlot.getHousehold().getId(), new Date());
 
-        if(validateTimeSlot(bookingSlotsForDay, bookingSlot)){
-            BookingSlot b = bookingSlotRepository.save(bookingSlot);
-            return b;
+        if(validateTimeSlot(bookingSlotsForDay,bookingSlotsByHousehold ,bookingSlot)){
+            return bookingSlotRepository.save(bookingSlot);
         }
         throw new ServiceException("Could not create a booking time.", HttpStatus.BAD_REQUEST.value());
     }
 
-    private boolean validateTimeSlot(List<BookingSlot> bookingSlotsForDay, BookingSlot bookingSlot) throws ServiceException {
-        List<BookingSlot> bookingSlotsByHousehold = bookingSlotRepository.findByHouseholdIdAndDateAfter(bookingSlot.getHousehold().getId(), new Date());
+    private boolean validateTimeSlot(List<BookingSlot> bookingSlotsForDay, List<BookingSlot> bookingSlotsByHousehold, BookingSlot bookingSlot) throws ServiceException {
 
         if (!bookingSlotsByHousehold.isEmpty())
             throw new ServiceException("You have reserved booking, please cancel it first.", HttpStatus.BAD_REQUEST.value());
