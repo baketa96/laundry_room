@@ -1,4 +1,4 @@
-package com.example.laundry_room;
+package com.example.laundry_room.Models;
 
 import javax.persistence.*;
 import java.util.Date;

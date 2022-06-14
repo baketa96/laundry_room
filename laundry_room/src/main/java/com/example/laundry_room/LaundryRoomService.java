@@ -1,6 +1,14 @@
 package com.example.laundry_room;
 
 
+import com.example.laundry_room.Models.BookingSlot;
+import com.example.laundry_room.Models.Building;
+import com.example.laundry_room.Models.Household;
+import com.example.laundry_room.Models.LaundryRoom;
+import com.example.laundry_room.Repositories.BookingSlotRepository;
+import com.example.laundry_room.Repositories.BuildingRepository;
+import com.example.laundry_room.Repositories.HouseholdRepository;
+import com.example.laundry_room.Repositories.LaundryRoomRepository;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -72,7 +80,8 @@ public class LaundryRoomService {
             throw new ServiceException("Error processing request", HttpStatus.BAD_REQUEST.value());
         }
 
-        List<LaundryRoom> laundryRooms = getLaundryRoomsInBuilding(id);
+        Building b = getBuildingById(id);
+        List<LaundryRoom> laundryRooms = getLaundryRoomsInBuilding(b.getId());
         List<Long> laundryRoomsId = laundryRooms.stream().map(LaundryRoom::getId).collect(Collectors.toList());
         LocalDate startDate = new LocalDate();
         LocalDate endDate = startDate.plusDays(noDays);

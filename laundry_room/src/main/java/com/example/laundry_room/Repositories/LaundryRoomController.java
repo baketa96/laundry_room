@@ -1,5 +1,11 @@
-package com.example.laundry_room;
+package com.example.laundry_room.Repositories;
 
+import com.example.laundry_room.LaundryRoomService;
+import com.example.laundry_room.Models.BookingSlot;
+import com.example.laundry_room.Models.Building;
+import com.example.laundry_room.Models.Household;
+import com.example.laundry_room.Models.LaundryRoom;
+import com.example.laundry_room.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

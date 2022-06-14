@@ -1,27 +1,27 @@
-package com.example.laundry_room;
+package com.example.laundry_room.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
-public class Household {
+public class LaundryRoom {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private String owner;
+    private String name;
     @ManyToOne
     private Building building;
 
-    public Household() {
-    }
 
-    public Household(Long id, String owner, Building building) {
+    public LaundryRoom(Long id, String name, Building building) {
         this.id = id;
-        this.owner = owner;
+        this.name = name;
         this.building = building;
     }
 
+    public LaundryRoom() {
+
+    }
 
     public Long getId() {
         return id;
@@ -31,12 +31,12 @@ public class Household {
         this.id = id;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getName() {
+        return name;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Building getBuilding() {

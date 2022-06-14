@@ -1,8 +1,8 @@
-package com.example.laundry_room;
+package com.example.laundry_room.Repositories;
 
+import com.example.laundry_room.Models.BookingSlot;
 import org.springframework.data.repository.CrudRepository;
 
-import java.awt.print.Book;
 import java.util.Date;
 import java.util.List;
 
